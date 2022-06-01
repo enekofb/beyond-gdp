@@ -22,8 +22,10 @@ integration-tests:
 
 install: test
 	go install
+load-image:
+	kind load docker-image world-happiness-api:latest --name development
 
-helm-upgrade:
-	helm upgrade world-happiness-api charts/world-happiness-api -n egctl --wait --timeout 120s --create-namespace --install
+helm-upgrade: load-image
+	helm upgrade world-happiness-api .charts/world-happiness-api -n world-happiness --wait --timeout 120s --create-namespace --install
 
 upgrade: docker-build helm-upgrade
