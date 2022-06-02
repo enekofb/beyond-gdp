@@ -7,9 +7,39 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Conf configuration entity for countries
+type Conf struct {
+	ResourcesPath string
+}
+
+//Country represents country entity in our domain
 type Country struct {
 	Name  string `json:"name"`
 	Score string `json:"score"`
+}
+
+// CountryRepository repository pattern for country entity
+type CountryRepository struct {
+	items map[string]Country
+}
+
+func (r CountryRepository) GetAll() {
+
+}
+
+// NewRepository creates a new repository for country entities
+func NewRepository(conf Conf) (CountryRepository, error) {
+	countries, err := readCountriesFromCsv(conf.ResourcesPath)
+	if err != nil {
+		return CountryRepository{}, errors.Wrap(err, "cannot read countries from csv")
+	}
+	var countryMap = map[string]Country{}
+	for _, country := range countries {
+		countryMap[country.Name] = country
+	}
+	return CountryRepository{
+		items: countryMap,
+	}, nil
 }
 
 var countriesResource string
@@ -75,13 +105,8 @@ func readCsv(csvPath string) ([][]string, error) {
 	return results, nil
 }
 
-// Conf configuration entity for
-type Conf struct {
-	ResourcesPath string
-}
-
 // Get the full list of countries
-func (conf *Conf) Get() ([]Country, error) {
+func (conf CountryRepository) Get() ([]Country, error) {
 	if len(countries) == 0 {
 		var err error
 		countries, err = readCountriesFromCsv(conf.ResourcesPath)

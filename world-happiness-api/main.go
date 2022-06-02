@@ -16,11 +16,29 @@ func setupRouter() *gin.Engine {
 		ResourcesPath: ".resources/world-happiness-data.csv",
 	}
 
+	repository, err := countries.NewRepository(countriesConf)
+	if err != nil {
+		log.Panic(errors.Wrap(err, "cannot create country repository"))
+		return nil
+	}
+
 	router.GET("/health", func(c *gin.Context) {
 		c.String(200, "up")
 	})
 
 	router.GET("/countries", func(c *gin.Context) {
+
+		repository.GetAll()
+		countriesAsJson, err := json.Marshal(&countries)
+		if err != nil {
+			log.Fatal(errors.Wrap(err, "cannot marshall json"))
+			c.String(500, "internal error")
+		}
+		c.String(200, string(countriesAsJson))
+		return
+	})
+
+	router.GET("/countries/:countryName", func(c *gin.Context) {
 		countries, err := countriesConf.Get()
 		if err != nil {
 			log.Fatal(errors.Wrap(err, "cannot get all countries"))

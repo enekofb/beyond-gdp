@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -34,6 +35,19 @@ func TestRouter_Health(t *testing.T) {
 		assert.Contains(t, w.Body.String(), "Finland")
 		assert.Contains(t, w.Body.String(), "Spain")
 
+	})
+
+	t.Run("can get country by countryName", func(t *testing.T) {
+		var countryName = "Spain"
+
+		router := setupRouter()
+
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/countries/%s", countryName), nil)
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, 200, w.Code)
+		assert.Contains(t, w.Body.String(), "Spain")
 	})
 
 }
