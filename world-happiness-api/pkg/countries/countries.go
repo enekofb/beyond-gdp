@@ -15,10 +15,6 @@ type Country struct {
 var countriesResource string
 var countries []Country
 
-func init() {
-	readCountriesFromCsv(countriesResource)
-}
-
 func readCountriesFromCsv(csvPath string) ([]Country, error) {
 	if csvPath == "" {
 		return []Country{}, errors.New("invalid csv path")
@@ -36,7 +32,6 @@ func readCountriesFromCsv(csvPath string) ([]Country, error) {
 		return []Country{}, errors.Wrap(err, "cannot adapt countries")
 	}
 	return countries, nil
-
 }
 
 func adaptToCountries(countriesAsLines [][]string) ([]Country, error) {
@@ -80,6 +75,17 @@ func readCsv(csvPath string) ([][]string, error) {
 	return results, nil
 }
 
-func GetAll() ([]Country, error) {
-	return countries, errors.New("not implemented")
+type Conf struct {
+	ResourcesPath string
+}
+
+func (conf *Conf) GetAll() ([]Country, error) {
+	if len(countries) == 0 {
+		var err error
+		countries, err = readCountriesFromCsv(conf.ResourcesPath)
+		if err != nil {
+			return []Country{}, errors.Wrap(err, "cannot read countries from csv")
+		}
+	}
+	return countries, nil
 }
