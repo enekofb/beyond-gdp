@@ -26,5 +26,4 @@ func TestGetAll(t *testing.T) {
 	require.NotEmpty(t, countries, "should have some countries")
 	require.Nil(t, err, "error not expected")
 	require.Equal(t, len(countries), 147, "should have all countries")
-
 }
