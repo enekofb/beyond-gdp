@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/enekofb/beyond-gdp/world-happiness-api/pkg/countries"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +15,12 @@ func setupRouter() *gin.Engine {
 	})
 
 	router.GET("/countries", func(c *gin.Context) {
-		//countries.GetAll()
-		c.String(500, "not available")
+		_, err := countries.GetAll()
+		if err != nil {
+			log.Println("cannot get all countries")
+			c.String(500, "not available")
+			return
+		}
 	})
 
 	return router

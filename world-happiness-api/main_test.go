@@ -31,7 +31,6 @@ func TestRouter_Health(t *testing.T) {
 		router.ServeHTTP(w, req)
 
 		assert.Equal(t, 200, w.Code)
-		//assert.Equal(t, "up", w.Body.String())
 	})
 
 }
