@@ -21,7 +21,7 @@ func TestGetAll(t *testing.T) {
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
 
-	countries, err := conf.GetAll()
+	countries, err := conf.Get()
 
 	require.NotEmpty(t, countries, "should have some countries")
 	require.Nil(t, err, "error not expected")

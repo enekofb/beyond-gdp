@@ -75,11 +75,13 @@ func readCsv(csvPath string) ([][]string, error) {
 	return results, nil
 }
 
+// Conf configuration entity for
 type Conf struct {
 	ResourcesPath string
 }
 
-func (conf *Conf) GetAll() ([]Country, error) {
+// Get the full list of countries
+func (conf *Conf) Get() ([]Country, error) {
 	if len(countries) == 0 {
 		var err error
 		countries, err = readCountriesFromCsv(conf.ResourcesPath)
