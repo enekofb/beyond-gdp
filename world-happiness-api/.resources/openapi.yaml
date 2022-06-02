@@ -46,14 +46,15 @@ components:
       description: request failed due to incorrect scopes
   schemas:
     Countries:
-      description: countries
-      properties:
-        results:
-          description: list of happiness country data
-          items:
-            $ref: '#/components/schemas/Country'
-          type: array
-      type: object
+      type: array
+      description: list of happiness country data
+      items:
+        $ref: '#/components/schemas/Country'
+      example:
+        - name: "Finland"
+          score: 7.821
+        - name: "Denmark"
+          score: 7.636
     Country:
       type: object
       properties:
@@ -62,4 +63,4 @@ components:
           example: "Finland"
         score:
           type: number
-          example: 70.1
+          example: 7.821
