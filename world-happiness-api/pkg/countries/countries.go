@@ -35,7 +35,7 @@ func (repository CountryRepository) GetByName(name string) (Country, error) {
 	if country, ok := repository.asMap[name]; ok {
 		return country, nil
 	}
-	return Country{}, errors.New("country not found")
+	return Country{}, nil
 }
 
 // NewRepository creates a new repository for country entities

@@ -36,7 +36,7 @@ func TestGetAll(t *testing.T) {
 	require.Equal(t, len(countries), 147, "should have all countries")
 }
 
-func TestGetByName(t *testing.T) {
+func TestGetByNameForExistingCountry(t *testing.T) {
 	conf := Conf{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
@@ -45,4 +45,15 @@ func TestGetByName(t *testing.T) {
 	country, err := repository.GetByName("Spain")
 	require.Nil(t, err, "error not expected")
 	require.Equal(t, country.Name, "Spain", "not valid retrieved country")
+}
+
+func TestGetByNameForNonExistingCountry(t *testing.T) {
+	conf := Conf{
+		ResourcesPath: "../../.resources/world-happiness-data.csv",
+	}
+	repository, err := NewRepository(conf)
+	require.Nil(t, err, "error not expected")
+	country, err := repository.GetByName("dontExists")
+	require.Nil(t, err, "error not expected")
+	require.Equal(t, country, Country{}, "not valid retrieved country")
 }
