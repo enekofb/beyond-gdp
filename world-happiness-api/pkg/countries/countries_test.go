@@ -27,14 +27,11 @@ func Test_readCountriesFromCsv(t *testing.T) {
 }
 
 func TestGetAll(t *testing.T) {
-
 	conf := Conf{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
-
-	countries, err := conf.Get()
-
-	require.NotEmpty(t, countries, "should have some countries")
+	repository, err := NewRepository(conf)
 	require.Nil(t, err, "error not expected")
+	countries := repository.GetAll()
 	require.Equal(t, len(countries), 147, "should have all countries")
 }

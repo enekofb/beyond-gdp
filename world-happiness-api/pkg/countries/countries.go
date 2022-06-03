@@ -20,11 +20,12 @@ type Country struct {
 
 // CountryRepository repository pattern for country entity
 type CountryRepository struct {
-	items map[string]Country
+	asList []Country
+	asMap  map[string]Country
 }
 
-func (r CountryRepository) GetAll() {
-
+func (repository CountryRepository) GetAll() []Country {
+	return repository.asList
 }
 
 // NewRepository creates a new repository for country entities
@@ -38,7 +39,8 @@ func NewRepository(conf Conf) (CountryRepository, error) {
 		countryMap[country.Name] = country
 	}
 	return CountryRepository{
-		items: countryMap,
+		asMap:  countryMap,
+		asList: countries,
 	}, nil
 }
 
@@ -103,16 +105,4 @@ func readCsv(csvPath string) ([][]string, error) {
 	}
 
 	return results, nil
-}
-
-// Get the full list of countries
-func (conf CountryRepository) Get() ([]Country, error) {
-	if len(countries) == 0 {
-		var err error
-		countries, err = readCountriesFromCsv(conf.ResourcesPath)
-		if err != nil {
-			return []Country{}, errors.Wrap(err, "cannot read countries from csv")
-		}
-	}
-	return countries, nil
 }
