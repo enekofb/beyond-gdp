@@ -37,22 +37,31 @@ func setupRouter() *gin.Engine {
 		return
 	})
 
-	//router.GET("/countries/:countryName", func(c *gin.Context) {
-	//	countries, err := countriesConf.Get()
-	//	if err != nil {
-	//		log.Fatal(errors.Wrap(err, "cannot get all countries"))
-	//		c.String(500, "internal error")
-	//		return
-	//	}
-	//	countriesAsJson, err := json.Marshal(&countries)
-	//	if err != nil {
-	//		log.Fatal(errors.Wrap(err, "cannot marshall json"))
-	//		c.String(500, "internal error")
-	//	}
-	//	c.String(200, string(countriesAsJson))
-	//	return
-	//
-	//})
+	router.GET("/countries/:countryName", func(c *gin.Context) {
+		countryName, exists := c.Get("countryName")
+		if !exists {
+			log.Fatal(errors.Wrap(err, "countryName not found"))
+			c.String(500, "internal error")
+			return
+
+		}
+
+		repository.GetByName(countryName)
+		countries, err := countriesConf.Get()
+		if err != nil {
+			log.Fatal(errors.Wrap(err, "cannot get all countries"))
+			c.String(500, "internal error")
+			return
+		}
+		countriesAsJson, err := json.Marshal(&countries)
+		if err != nil {
+			log.Fatal(errors.Wrap(err, "cannot marshall json"))
+			c.String(500, "internal error")
+		}
+		c.String(200, string(countriesAsJson))
+		return
+
+	})
 
 	return router
 }

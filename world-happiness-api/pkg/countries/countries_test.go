@@ -35,3 +35,14 @@ func TestGetAll(t *testing.T) {
 	countries := repository.GetAll()
 	require.Equal(t, len(countries), 147, "should have all countries")
 }
+
+func TestGetByName(t *testing.T) {
+	conf := Conf{
+		ResourcesPath: "../../.resources/world-happiness-data.csv",
+	}
+	repository, err := NewRepository(conf)
+	require.Nil(t, err, "error not expected")
+	country, err := repository.GetByName("Spain")
+	require.Nil(t, err, "error not expected")
+	require.Equal(t, country.Name, "Spain", "not valid retrieved country")
+}

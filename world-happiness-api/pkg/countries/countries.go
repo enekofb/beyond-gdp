@@ -28,6 +28,16 @@ func (repository CountryRepository) GetAll() []Country {
 	return repository.asList
 }
 
+func (repository CountryRepository) GetByName(name string) (Country, error) {
+	if name == "" {
+		return Country{}, errors.New("country name cannot be empty")
+	}
+	if country, ok := repository.asMap[name]; ok {
+		return country, nil
+	}
+	return Country{}, errors.New("country not found")
+}
+
 // NewRepository creates a new repository for country entities
 func NewRepository(conf Conf) (CountryRepository, error) {
 	countries, err := readCountriesFromCsv(conf.ResourcesPath)
