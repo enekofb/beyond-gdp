@@ -1,0 +1,10 @@
+replicas: 2
+metadata:
+  version: "latest"
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    memory: 1Gi
+    cpu: 1000m

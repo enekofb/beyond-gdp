@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: Wold Happiness API
+  description: api for world happiness report https://worldhappiness.report/
+  version: 'v1'
+  contact:
+    name: "Exemplar Capability"
+    email: "eg-control-plane@expedia.com"
+    url: "#eg-platform-control-plane"
+servers:
+  - url: "https://www.world-happiness.org/api/v1"
+paths:
+  /countries:
+    get:
+      description: search countries happiness data
+      responses:
+        '200':
+          description: request succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Countries'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - Oauth2:
+            - platform-control-plane.exemplar-capability.read
+components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: this api uses Oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://identity-authorization-server.us-west-2.test.eguser.expedia.com/api/v1/token
+          scopes:
+            world-happiness.countries.read: allow read access to countries read endpoints
+  responses:
+    Ok:
+      description: request succeeded
+    Unauthorized:
+      description: request failed due to missing or invalid access token
+    Forbidden:
+      description: request failed due to incorrect scopes
+  schemas:
+    Countries:
+      type: array
+      description: list of happiness country data
+      items:
+        $ref: '#/components/schemas/Country'
+      example:
+        - name: "Finland"
+          score: 7.821
+        - name: "Denmark"
+          score: 7.636
+    Country:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Finland"
+        score:
+          type: number
+          example: 7.821
