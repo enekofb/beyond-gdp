@@ -7,16 +7,16 @@ import (
 	"github.com/enekofb/beyond-gdp/world-happiness-api/pkg/countries"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 )
 
 func setupRouter() *gin.Engine {
 	router := gin.Default()
 
-	countriesConf := countries.Conf{
-		ResourcesPath: ".resources/world-happiness-data.csv",
-	}
-
-	repository, err := countries.NewRepository(countriesConf)
+	resources := viper.GetString("resources")
+	repository, err := countries.NewRepository(countries.Configuration{
+		resources,
+	})
 	if err != nil {
 		log.Panic(errors.Wrap(err, "cannot create country repository"))
 		return nil
@@ -65,11 +65,25 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
-
-	router := setupRouter()
-	err := router.Run(":8080")
-	//todo: review
+	// setup setupConfiguration
+	err := setupConfiguration()
 	if err != nil {
-		log.Panic(err)
+		log.Panic(errors.Wrap(err, "cannot create default setupConfiguration"))
 	}
+	//setup router
+	router := setupRouter()
+	err = router.Run(":8080")
+	if err != nil {
+		log.Panic(errors.Wrap(err, "cannot run server"))
+	}
+}
+
+func setupConfiguration() error {
+	viper.SetConfigName("config.yaml") // name of config file (without extension)
+	viper.AddConfigPath(".")           // optionally look for config in the working directory
+	err := viper.ReadInConfig()        // Find and read the config file
+	if err != nil {                    // Handle errors reading the config file
+		return errors.Wrap(err, "cannot read configuration file")
+	}
+	return nil
 }

@@ -7,11 +7,25 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestRouter_Health(t *testing.T) {
+func TestConfiguration(t *testing.T) {
+
+	t.Run("can start with default setupConfiguration", func(t *testing.T) {
+		err := setupConfiguration()
+		require.Nil(t, err)
+
+	})
+
+}
+
+func TestRouter(t *testing.T) {
 
 	t.Run("can check health endpoint", func(t *testing.T) {
+
+		err := setupConfiguration()
+		require.Nil(t, err)
 
 		router := setupRouter()
 
@@ -24,6 +38,9 @@ func TestRouter_Health(t *testing.T) {
 	})
 
 	t.Run("can get all countries", func(t *testing.T) {
+
+		err := setupConfiguration()
+		require.Nil(t, err)
 
 		router := setupRouter()
 
@@ -39,6 +56,8 @@ func TestRouter_Health(t *testing.T) {
 
 	t.Run("can get country by countryName", func(t *testing.T) {
 		var countryName = "Spain"
+		err := setupConfiguration()
+		require.Nil(t, err)
 
 		router := setupRouter()
 

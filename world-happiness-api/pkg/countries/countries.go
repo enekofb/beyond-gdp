@@ -7,8 +7,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Conf configuration entity for countries
-type Conf struct {
+// Configuration configuration entity for countries
+type Configuration struct {
 	ResourcesPath string
 }
 
@@ -39,7 +39,7 @@ func (repository CountryRepository) GetByName(name string) (Country, error) {
 }
 
 // NewRepository creates a new repository for country entities
-func NewRepository(conf Conf) (CountryRepository, error) {
+func NewRepository(conf Configuration) (CountryRepository, error) {
 	countries, err := readCountriesFromCsv(conf.ResourcesPath)
 	if err != nil {
 		return CountryRepository{}, errors.Wrap(err, "cannot read countries from csv")

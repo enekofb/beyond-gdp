@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewCountriesRepository(t *testing.T) {
-	conf := Conf{
+	conf := Configuration{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
 
@@ -27,7 +27,7 @@ func Test_readCountriesFromCsv(t *testing.T) {
 }
 
 func TestGetAll(t *testing.T) {
-	conf := Conf{
+	conf := Configuration{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
 	repository, err := NewRepository(conf)
@@ -37,7 +37,7 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestGetByNameForExistingCountry(t *testing.T) {
-	conf := Conf{
+	conf := Configuration{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
 	repository, err := NewRepository(conf)
@@ -48,7 +48,7 @@ func TestGetByNameForExistingCountry(t *testing.T) {
 }
 
 func TestGetByNameForNonExistingCountry(t *testing.T) {
-	conf := Conf{
+	conf := Configuration{
 		ResourcesPath: "../../.resources/world-happiness-data.csv",
 	}
 	repository, err := NewRepository(conf)
