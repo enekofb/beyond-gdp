@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +16,7 @@ func TestConfiguration(t *testing.T) {
 	t.Run("can start with default setupConfiguration", func(t *testing.T) {
 		err := setupConfiguration()
 		require.Nil(t, err)
-
+		assert.Equal(t, ".resources/world-happiness-data.csv", viper.GetString("country.resources"))
 	})
 
 }

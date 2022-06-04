@@ -13,7 +13,7 @@ import (
 func setupRouter() *gin.Engine {
 	router := gin.Default()
 
-	resources := viper.GetString("resources")
+	resources := viper.GetString("country.resources")
 	repository, err := countries.NewRepository(countries.Configuration{
 		resources,
 	})
@@ -79,10 +79,11 @@ func main() {
 }
 
 func setupConfiguration() error {
-	viper.SetConfigName("config.yaml") // name of config file (without extension)
-	viper.AddConfigPath(".")           // optionally look for config in the working directory
-	err := viper.ReadInConfig()        // Find and read the config file
-	if err != nil {                    // Handle errors reading the config file
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")    // optionally look for config in the working directory
+	err := viper.ReadInConfig() // Find and read the config file
+	if err != nil {             // Handle errors reading the config file
 		return errors.Wrap(err, "cannot read configuration file")
 	}
 	return nil

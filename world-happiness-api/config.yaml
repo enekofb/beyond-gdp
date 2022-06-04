@@ -1,2 +1,2 @@
-countries:
-  resources: "world-happiness-data.csv"
+country:
+  resources: ".resources/world-happiness-data.csv"
