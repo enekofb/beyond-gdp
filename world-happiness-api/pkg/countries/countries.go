@@ -2,6 +2,7 @@ package countries
 
 import (
 	"encoding/csv"
+	"log"
 	"os"
 
 	"github.com/pkg/errors"
@@ -40,6 +41,7 @@ func (repository CountryRepository) GetByName(name string) (Country, error) {
 
 // NewRepository creates a new repository for country entities
 func NewRepository(conf Configuration) (CountryRepository, error) {
+	log.Printf("create repository from csv file in '%s'", conf.ResourcesPath)
 	countries, err := readCountriesFromCsv(conf.ResourcesPath)
 	if err != nil {
 		return CountryRepository{}, errors.Wrap(err, "cannot read countries from csv")

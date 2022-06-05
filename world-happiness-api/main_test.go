@@ -8,15 +8,20 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
+
+const testConfigName = ".resources/test/config"
 
 func TestConfiguration(t *testing.T) {
 
-	t.Run("can start with default setupConfiguration", func(t *testing.T) {
-		err := setupConfiguration()
-		require.Nil(t, err)
+	t.Run("configurations with defaults", func(t *testing.T) {
+		setupConfiguration("dontExits")
 		assert.Equal(t, ".resources/world-happiness-data.csv", viper.GetString("country.resources"))
+	})
+
+	t.Run("can start with configuration", func(t *testing.T) {
+		setupConfiguration(testConfigName)
+		assert.Equal(t, ".resources/test/world-happiness-data.csv", viper.GetString("country.resources"))
 	})
 
 }
@@ -25,8 +30,7 @@ func TestRouter(t *testing.T) {
 
 	t.Run("can check health endpoint", func(t *testing.T) {
 
-		err := setupConfiguration()
-		require.Nil(t, err)
+		setupConfiguration(testConfigName)
 
 		router := setupRouter()
 
@@ -40,8 +44,7 @@ func TestRouter(t *testing.T) {
 
 	t.Run("can get all countries", func(t *testing.T) {
 
-		err := setupConfiguration()
-		require.Nil(t, err)
+		setupConfiguration(testConfigName)
 
 		router := setupRouter()
 
@@ -51,14 +54,13 @@ func TestRouter(t *testing.T) {
 
 		assert.Equal(t, 200, w.Code)
 		assert.Contains(t, w.Body.String(), "Finland")
-		assert.Contains(t, w.Body.String(), "Spain")
+		assert.Contains(t, w.Body.String(), "Denmark")
 
 	})
 
 	t.Run("can get country by countryName", func(t *testing.T) {
-		var countryName = "Spain"
-		err := setupConfiguration()
-		require.Nil(t, err)
+		var countryName = "Finland"
+		setupConfiguration(testConfigName)
 
 		router := setupRouter()
 
@@ -67,7 +69,7 @@ func TestRouter(t *testing.T) {
 		router.ServeHTTP(w, req)
 
 		assert.Equal(t, 200, w.Code)
-		assert.Contains(t, w.Body.String(), "Spain")
+		assert.Contains(t, w.Body.String(), "Finland")
 	})
 
 }
