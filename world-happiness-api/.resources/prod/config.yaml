@@ -1,0 +1,2 @@
+country:
+  resources: "world-happiness-data.csv"

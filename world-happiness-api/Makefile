@@ -1,8 +1,15 @@
 #!make
 SHELL := /bin/bash
 .SHELLFLAGS := -ec
+.DEFAULT_GOAL := build
 
-test:
+fmt:
+	go fmt ./...
+
+vet: fmt
+	go vet ./...
+
+test: vet
 	go test ./...
 
 build: test
@@ -17,11 +24,9 @@ docker-run:
 docker-push:
 	docker push world-happiness-api:latest
 
-integration-tests:
-	go test -v ./integration/... -tags integration
-
 install: test
 	go install
+
 load-image:
 	kind load docker-image world-happiness-api:latest --name development
 

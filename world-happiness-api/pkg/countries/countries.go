@@ -2,15 +2,11 @@ package countries
 
 import (
 	"encoding/csv"
+	"log"
 	"os"
 
 	"github.com/pkg/errors"
 )
-
-// Conf configuration entity for countries
-type Conf struct {
-	ResourcesPath string
-}
 
 //Country represents country entity in our domain
 type Country struct {
@@ -38,9 +34,13 @@ func (repository CountryRepository) GetByName(name string) (Country, error) {
 	return Country{}, nil
 }
 
-// NewRepository creates a new repository for country entities
-func NewRepository(conf Conf) (CountryRepository, error) {
-	countries, err := readCountriesFromCsv(conf.ResourcesPath)
+// NewRepositoryFromCsv creates a new repository for country entities using csv as data source
+func NewRepositoryFromCsv(csvPath string) (CountryRepository, error) {
+	if csvPath == "" {
+		return CountryRepository{}, errors.New("csv path cannot be empty")
+	}
+	log.Printf("create repository from csv file in '%s'", csvPath)
+	countries, err := readCountriesFromCsv(csvPath)
 	if err != nil {
 		return CountryRepository{}, errors.Wrap(err, "cannot read countries from csv")
 	}
@@ -53,9 +53,6 @@ func NewRepository(conf Conf) (CountryRepository, error) {
 		asList: countries,
 	}, nil
 }
-
-var countriesResource string
-var countries []Country
 
 func readCountriesFromCsv(csvPath string) ([]Country, error) {
 	if csvPath == "" {
@@ -105,7 +102,12 @@ func readCsv(csvPath string) ([][]string, error) {
 	}
 
 	// remember to close the file at the end of the program
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			log.Printf(errors.Wrap(err, "cannot close csv file").Error())
+		}
+	}(f)
 
 	// read csv values using csv.Reader
 	csvReader := csv.NewReader(f)
