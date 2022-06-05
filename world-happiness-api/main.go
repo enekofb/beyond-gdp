@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"net/http"
 
 	"github.com/enekofb/beyond-gdp/world-happiness-api/pkg/countries"
 	"github.com/gin-gonic/gin"
@@ -13,27 +14,25 @@ import (
 func setupRouter() *gin.Engine {
 	router := gin.Default()
 
-	resources := viper.GetString("country.resources")
-	repository, err := countries.NewRepository(countries.Configuration{
-		resources,
-	})
+	resourcesAsCsv := viper.GetString("country.resources")
+	repository, err := countries.NewRepositoryFromCsv(resourcesAsCsv)
 	if err != nil {
 		log.Panic(errors.Wrap(err, "cannot create country repository"))
 		return nil
 	}
 
 	router.GET("/health", func(c *gin.Context) {
-		c.String(200, "up")
+		c.String(http.StatusOK, "up")
 	})
 
 	router.GET("/countries", func(c *gin.Context) {
 		countries := repository.GetAll()
 		countriesAsJson, err := json.Marshal(&countries)
 		if err != nil {
-			log.Fatal(errors.Wrap(err, "cannot marshall json"))
-			c.String(500, "internal error")
+			log.Println(errors.Wrap(err, "cannot marshall json"))
+			c.String(http.StatusInternalServerError, "internal error")
 		}
-		c.String(200, string(countriesAsJson))
+		c.String(http.StatusOK, string(countriesAsJson))
 		return
 	})
 
@@ -42,21 +41,20 @@ func setupRouter() *gin.Engine {
 		countryName := c.Param("countryName")
 		country, err := repository.GetByName(countryName)
 		if err != nil {
-			log.Fatal(errors.Wrap(err, "cannot get country by name"))
-			c.String(500, "internal error")
+			c.String(http.StatusInternalServerError, "internal error")
 			return
 		}
 		var emptyCountry = countries.Country{}
 		if country == emptyCountry {
-			c.String(404, "country not found")
+			c.String(http.StatusNotFound, "country not found")
 			return
 		}
 		countryAsJson, err := json.Marshal(&country)
 		if err != nil {
-			log.Fatal(errors.Wrap(err, "cannot marshall json"))
-			c.String(500, "internal error")
+			c.String(http.StatusInternalServerError, "internal error")
+			return
 		}
-		c.String(200, string(countryAsJson))
+		c.String(http.StatusOK, string(countryAsJson))
 		return
 
 	})
