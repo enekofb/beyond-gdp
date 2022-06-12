@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS S3 VPCe
+Parameters:
+  EcrImageUri:
+    Description: ECR image URI
+    Type: String
+    Default: "777171359344.dkr.ecr.eu-west-1.amazonaws.com/world-happiness-api:latest"
+Resources:
+  MyRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: "world-happiness-api"
+  MyLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "MyLambdaRole"
+      Description: "My lambda for pipeline"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      PackageType: Image
+      Role:
+        Fn::GetAtt:
+          - MyLambdaRole
+          - Arn
+      Code:
+        ImageUri: !Ref 'EcrImageUri'
+      MemorySize: 1024
+      Timeout: 300

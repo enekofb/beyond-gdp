@@ -2,6 +2,9 @@
 SHELL := /bin/bash
 .SHELLFLAGS := -ec
 .DEFAULT_GOAL := build
+AWS_REGION=eu-west-1
+AWS_PROFILE=enekofb-777171359344
+
 
 fmt:
 	go fmt ./...
@@ -21,8 +24,12 @@ docker-build: build
 docker-run:
 	docker run -p 8080:8080 --name world-happiness-api --rm world-happiness-api:latest
 
-docker-push:
-	docker push world-happiness-api:latest
+ecr-login:
+	aws ecr --region $(AWS_REGION) --profile $(AWS_PROFILE) get-login-password | docker login --username AWS --password-stdin https://777171359344.dkr.ecr.eu-west-1.amazonaws.com
+
+docker-push: ecr-login
+	docker tag world-happiness-api:latest 777171359344.dkr.ecr.eu-west-1.amazonaws.com/world-happiness-api:latest
+	docker push 777171359344.dkr.ecr.eu-west-1.amazonaws.com/world-happiness-api:latest
 
 install: test
 	go install
