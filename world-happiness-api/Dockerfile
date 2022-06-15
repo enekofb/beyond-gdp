@@ -6,14 +6,11 @@ COPY . .
 COPY .resources/prod/world-happiness-data.csv /world-happiness-data.csv
 COPY .resources/prod/config.yaml /config.yaml
 RUN go test  ./...
-RUN go build -o /bin/world-happiness-api
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/world-happiness-api
 
+FROM public.ecr.aws/lambda/go:1
 
-
-FROM alpine:3.11
-RUN apk add ca-certificates
-
-COPY --from=build /bin/world-happiness-api /bin/world-happiness-api
-COPY --from=build /world-happiness-data.csv /world-happiness-data.csv
-COPY --from=build /config.yaml /config.yaml
+COPY --from=build /bin/world-happiness-api ${LAMBDA_TASK_ROOT}
+COPY --from=build /world-happiness-data.csv ${LAMBDA_TASK_ROOT}
+COPY --from=build /config.yaml ${LAMBDA_TASK_ROOT}
 CMD ["world-happiness-api"]
