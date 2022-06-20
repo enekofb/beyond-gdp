@@ -15,3 +15,6 @@
 # vendor/
 
 world-happiness-api/world-happiness-api
+
+.idea/**
+**secret**
