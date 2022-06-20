@@ -1,3 +1,9 @@
+#!make
+SHELL := /bin/bash
+.SHELLFLAGS := -ec
+AWS_REGION=eu-west-1
+AWS_PROFILE=default
+
 kubernetes-create-dev:
 	kind create cluster --config clusters/dev.yaml
 
