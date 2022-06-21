@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: stack to manage account-level resources for beyond gdp aws account
+Resources:
+  Budget:
+    Type: "AWS::Budgets::Budget"
+    Properties:
+      Budget:
+        BudgetLimit:
+          Amount: 10
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 90
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: eneko@beyondgdp.co.uk
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 75
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: eneko@beyondgdp.co.uk
+Outputs:
+  BudgetId:
+    Value: !Ref BudgetExample

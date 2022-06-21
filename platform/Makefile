@@ -26,3 +26,9 @@ flux-install:
       --branch=main \
       --path=./clusters/kind \
       --personal
+
+account-resources-deploy:
+	aws cloudformation deploy --region $(AWS_REGION) --profile $(AWS_PROFILE)  \
+		--stack-name account-resources --capabilities CAPABILITY_NAMED_IAM \
+		--tags Name="account-resources" \
+		--template-file account/cf.yaml --no-fail-on-empty-changeset
