@@ -1,8 +1,23 @@
-kubernetes-create:
-	kind create cluster --config cluster.yaml
+#!make
+SHELL := /bin/bash
+.SHELLFLAGS := -ec
+AWS_REGION=eu-west-1
+AWS_PROFILE=default
 
-kubernetes-delete:
+kubernetes-create-dev:
+	kind create cluster --config clusters/dev.yaml
+
+kubernetes-delete-dev:
 	kind delete cluster
+
+kubernetes-create-test:
+	eksctl create cluster -f clusters/test.yaml
+
+kubernetes-delete-test:
+	eksctl delete cluster -f clusters/test.yaml
+
+kubeconfig-test:
+	aws eks update-kubeconfig --region eu-west-1 --name beyondgdp
 
 flux-install:
 	flux bootstrap github \

@@ -7,8 +7,10 @@ Kind clusters
 
 **Targets**
 
-* kubernetes-create: creates `kind` cluster using [cluster.yaml](./cluster.yaml)
-* kubernetes-delete: deletes `kind` cluster
+* kubernetes-create-dev: creates `kind` cluster using [cluster.yaml](clusters/dev.yaml)
+* kubernetes-delete-dev: deletes `kind` cluster
+* kubernetes-create-test: create test eks cluster using [cluster.yaml](clusters/test.yaml)
+* kubernetes-delete-test: delete test eks cluster
 
 ## Fluxcd
 
