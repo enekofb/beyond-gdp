@@ -27,4 +27,4 @@ Resources:
               Address: eneko@beyondgdp.co.uk
 Outputs:
   BudgetId:
-    Value: !Ref BudgetExample
+    Value: !Ref Budget
