@@ -7,6 +7,7 @@ metadata:
     app: {{ .Release.Name }}
     version: {{ .Values.metadata.version }}
 spec:
+  type: LoadBalancer
   ports:
     - name: app
       port: 80
