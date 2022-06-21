@@ -8,7 +8,7 @@ info:
     email: "eg-control-plane@expedia.com"
     url: "#eg-platform-control-plane"
 servers:
-  - url: "https://www.world-happiness.org/api/v1"
+  - url: "https://api.worldhappiness.beyondgdp.co.uk"
 paths:
   /countries:
     get:
