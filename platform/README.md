@@ -16,5 +16,13 @@ Kind clusters
 
 * flux-install: installs fluxcd in a running kube clusters (via kubeconfig) 
 
+## DNS
+
+**beyondgdp.co.uk**
+
+- domain registered with Ionos
+- subdomain for application
+  - worldhappiness.beyondgdp.co.uk
+
 
 
