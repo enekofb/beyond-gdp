@@ -7,10 +7,10 @@ metadata:
     app: {{ .Release.Name }}
     version: {{ .Values.metadata.version }}
 spec:
+  type: LoadBalancer
   ports:
-    - name: app
+    - name: http
       port: 80
-      protocol: TCP
       targetPort: 8080
   selector:
     app: {{ .Release.Name }}
