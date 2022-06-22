@@ -5,3 +5,210 @@ Resources:
     Type: AWS::ECR::Repository
     Properties:
       RepositoryName: "world-happiness-api"
+  WorldHappiness:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: "worldhappiness"
+      DashboardBody: |-
+        {
+            "widgets": [
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 0,
+                    "width": 12,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "RequestCount", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "RequestCount: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 12,
+                    "y": 0,
+                    "width": 12,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "Latency", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Average" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "Latency: Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 4,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "BackendConnectionErrors", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "BackendConnectionErrors: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 8,
+                    "y": 4,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "SpilloverCount", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "SpilloverCount: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 16,
+                    "y": 4,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "SurgeQueueLength", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Average" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "SurgeQueueLength: Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 8,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "HealthyHostCount", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Average" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "HealthyHostCount: Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 8,
+                    "y": 8,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "UnHealthyHostCount", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Average" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "UnHealthyHostCount: Average"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 16,
+                    "y": 8,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "HTTPCode_Backend_2XX", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "HTTPCode_Backend_2XX: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 0,
+                    "y": 12,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "HTTPCode_Backend_3XX", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "HTTPCode_Backend_3XX: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 8,
+                    "y": 12,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "HTTPCode_Backend_4XX", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "HTTPCode_Backend_4XX: Sum"
+                    }
+                },
+                {
+                    "type": "metric",
+                    "x": 16,
+                    "y": 12,
+                    "width": 8,
+                    "height": 4,
+                    "properties": {
+                        "metrics": [
+                            [ "AWS/ELB", "HTTPCode_Backend_5XX", "LoadBalancerName", "af31af20b0e3642c889cc73bb0814b81", { "period": 300, "stat": "Sum" } ]
+                        ],
+                        "legend": {
+                            "position": "bottom"
+                        },
+                        "region": "eu-west-1",
+                        "liveData": false,
+                        "title": "HTTPCode_Backend_5XX: Sum"
+                    }
+                }
+            ]
+        }
