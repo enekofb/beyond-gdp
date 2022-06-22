@@ -27,6 +27,30 @@ paths:
       security:
         - Oauth2:
             - platform-control-plane.exemplar-capability.read
+  /countries/{countryName}:
+    get:
+      description: get happiness data for country by name
+      parameters:
+        - name: countryName
+          in: "path"
+          description: "country name to search"
+      responses:
+        '200':
+          description: request succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - Oauth2:
+            - platform-control-plane.exemplar-capability.read
+
 components:
   securitySchemes:
     Oauth2:
@@ -44,6 +68,8 @@ components:
       description: request failed due to missing or invalid access token
     Forbidden:
       description: request failed due to incorrect scopes
+    NotFound:
+      description: could not find the requested resource
   schemas:
     Countries:
       type: array
