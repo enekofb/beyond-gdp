@@ -78,10 +78,10 @@ Resources:
           description: "world happiness api gateway"
           version: "v1"
         servers:
-          - url: "https://zar2ovqybd.execute-api.eu-west-1.amazonaws.com/{basePath}"
+          - url: "https://l84n6w2qs6.execute-api.eu-west-1.amazonaws.com/{basePath}"
             variables:
               basePath:
-                default: "/test"
+                default: "/prod"
         paths:
           /countries/{countryName}:
             get:
@@ -110,13 +110,15 @@ Resources:
               security:
                 - Cognito: [ ]
               x-amazon-apigateway-integration:
+                httpMethod: "GET"
+                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries/{countryName}"
                 responses:
                   default:
                     statusCode: "200"
-                requestTemplates:
-                  application/json: "{\"statusCode\": 200}"
+                requestParameters:
+                  integration.request.path.countryName: "method.request.path.countryName"
                 passthroughBehavior: "when_no_match"
-                type: "mock"
+                type: "http_proxy"
           /countries:
             get:
               responses:
@@ -135,13 +137,13 @@ Resources:
               security:
                 - Cognito: [ ]
               x-amazon-apigateway-integration:
+                httpMethod: "GET"
+                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries"
                 responses:
                   default:
                     statusCode: "200"
-                requestTemplates:
-                  application/json: "{\"statusCode\": 200}"
                 passthroughBehavior: "when_no_match"
-                type: "mock"
+                type: "http_proxy"
         components:
           schemas:
             Countries:
@@ -166,7 +168,6 @@ Resources:
                 providerARNs:
                   - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
                 type: "cognito_user_pools"
-
   Dashboard:
     Type: AWS::CloudWatch::Dashboard
     Properties:

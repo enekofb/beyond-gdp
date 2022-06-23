@@ -55,5 +55,5 @@ infra-auth-deploy:
 
 export-api-spec:
 	aws apigateway get-export --parameters extensions='apigateway' \
-	--rest-api-id zar2ovqybd --stage-name test --export-type oas30 \
+	--rest-api-id l84n6w2qs6 --stage-name prod --export-type oas30 \
 	--accepts application/yaml api-spec-latest.yaml
