@@ -46,3 +46,9 @@ infra-deploy:
 		--stack-name world-happiness --capabilities CAPABILITY_NAMED_IAM \
 		--tags Name="world-happiness-api" Application="world-happiness-api" \
 		--template-file ./.resources/cf.yaml --no-fail-on-empty-changeset
+
+infra-auth-deploy:
+	aws cloudformation deploy --region $(AWS_REGION) --profile $(AWS_PROFILE)  \
+		--stack-name world-happiness-auth --capabilities CAPABILITY_NAMED_IAM \
+		--tags Name="world-happiness-auth" Application="world-happiness-api" \
+		--template-file ./.resources/auth-cf.yaml --no-fail-on-empty-changeset
