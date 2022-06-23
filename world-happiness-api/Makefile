@@ -52,3 +52,8 @@ infra-auth-deploy:
 		--stack-name world-happiness-auth --capabilities CAPABILITY_NAMED_IAM \
 		--tags Name="world-happiness-auth" Application="world-happiness-api" \
 		--template-file ./.resources/auth-cf.yaml --no-fail-on-empty-changeset
+
+export-api-spec:
+	aws apigateway get-export --parameters extensions='apigateway' \
+	--rest-api-id zar2ovqybd --stage-name test --export-type oas30 \
+	--accepts application/yaml api-spec-latest.yaml

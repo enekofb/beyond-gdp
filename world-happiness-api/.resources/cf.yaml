@@ -39,7 +39,6 @@ Resources:
       CallbackURLs:
         - https://api.worldhappiness.beyondgdp.co.uk
       AllowedOAuthFlows:
-        - code
         - implicit
       AllowedOAuthScopes:
         - phone
@@ -53,6 +52,121 @@ Resources:
     Properties:
       Domain: !Ref CognitoDomain
       UserPoolId: !Ref UserPool
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    DependsOn:
+      ApiGateway
+    Properties:
+      IdentitySource: method.request.header.authorization
+      Name: Cognito
+      ProviderARNs:
+        - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
+      RestApiId: !Ref ApiGateway
+      Type: COGNITO_USER_POOLS
+  ApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: world happiness api gateway
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: "world-happiness-gateway"
+      Body:
+        openapi: "3.0.1"
+        info:
+          title: "world-happiness-gateway"
+          description: "world happiness api gateway"
+          version: "v1"
+        servers:
+          - url: "https://zar2ovqybd.execute-api.eu-west-1.amazonaws.com/{basePath}"
+            variables:
+              basePath:
+                default: "/test"
+        paths:
+          /countries/{countryName}:
+            get:
+              parameters:
+                - name: "countryName"
+                  in: "path"
+                  required: true
+                  schema:
+                    type: "string"
+              responses:
+                "404":
+                  description: "404 response"
+                  content: { }
+                "200":
+                  description: "200 response"
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/Country"
+                "401":
+                  description: "401 response"
+                  content: { }
+                "403":
+                  description: "403 response"
+                  content: { }
+              security:
+                - Cognito: [ ]
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+          /countries:
+            get:
+              responses:
+                "401":
+                  description: "401 response"
+                  content: { }
+                "200":
+                  description: "200 response"
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/Countries"
+                "403":
+                  description: "403 response"
+                  content: { }
+              security:
+                - Cognito: [ ]
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+        components:
+          schemas:
+            Countries:
+              type: "array"
+              description: "list of happiness country data"
+              items:
+                $ref: "#/components/schemas/Country"
+            Country:
+              type: "object"
+              properties:
+                score:
+                  type: "number"
+                name:
+                  type: "string"
+          securitySchemes:
+            Cognito:
+              type: "apiKey"
+              name: "authorization"
+              in: "header"
+              x-amazon-apigateway-authtype: "cognito_user_pools"
+              x-amazon-apigateway-authorizer:
+                providerARNs:
+                  - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
+                type: "cognito_user_pools"
+
   Dashboard:
     Type: AWS::CloudWatch::Dashboard
     Properties:
