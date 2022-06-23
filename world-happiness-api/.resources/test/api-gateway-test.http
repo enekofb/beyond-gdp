@@ -1,0 +1,7 @@
+### get countries
+GET https://l84n6w2qs6.execute-api.eu-west-1.amazonaws.com/prod/countries
+Authorization: {{token}}
+
+### get countries by name
+GET https://l84n6w2qs6.execute-api.eu-west-1.amazonaws.com/prod/countries/spain
+Authorization: {{token}}

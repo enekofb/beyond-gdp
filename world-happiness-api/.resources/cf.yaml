@@ -1,11 +1,174 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: world happiness infra resources
+Parameters:
+  CognitoDomain:
+    Type: String
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: ^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?$
+    Description: Enter a string. Must be alpha numeric 3-63 in length.
+    Default: "world-happiness"
 Resources:
   MyRepository:
     Type: AWS::ECR::Repository
     Properties:
       RepositoryName: "world-happiness-api"
-  WorldHappiness:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UsernameConfiguration:
+        CaseSensitive: true
+      AutoVerifiedAttributes:
+        - email
+      UserPoolName: !Sub ${CognitoDomain}-user-pool
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      GenerateSecret: true
+      CallbackURLs:
+        - https://api.worldhappiness.beyondgdp.co.uk
+      AllowedOAuthFlows:
+        - implicit
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref CognitoDomain
+      UserPoolId: !Ref UserPool
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    DependsOn:
+      ApiGateway
+    Properties:
+      IdentitySource: method.request.header.authorization
+      Name: Cognito
+      ProviderARNs:
+        - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
+      RestApiId: !Ref ApiGateway
+      Type: COGNITO_USER_POOLS
+  ApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: world happiness api gateway
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: "world-happiness-gateway"
+      Body:
+        openapi: "3.0.1"
+        info:
+          title: "world-happiness-gateway"
+          description: "world happiness api gateway"
+          version: "v1"
+        servers:
+          - url: "https://l84n6w2qs6.execute-api.eu-west-1.amazonaws.com/{basePath}"
+            variables:
+              basePath:
+                default: "/prod"
+        paths:
+          /countries/{countryName}:
+            get:
+              parameters:
+                - name: "countryName"
+                  in: "path"
+                  required: true
+                  schema:
+                    type: "string"
+              responses:
+                "404":
+                  description: "404 response"
+                  content: { }
+                "200":
+                  description: "200 response"
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/Country"
+                "401":
+                  description: "401 response"
+                  content: { }
+                "403":
+                  description: "403 response"
+                  content: { }
+              security:
+                - Cognito: [ ]
+              x-amazon-apigateway-integration:
+                httpMethod: "GET"
+                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries/{countryName}"
+                responses:
+                  default:
+                    statusCode: "200"
+                requestParameters:
+                  integration.request.path.countryName: "method.request.path.countryName"
+                passthroughBehavior: "when_no_match"
+                type: "http_proxy"
+          /countries:
+            get:
+              responses:
+                "401":
+                  description: "401 response"
+                  content: { }
+                "200":
+                  description: "200 response"
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/Countries"
+                "403":
+                  description: "403 response"
+                  content: { }
+              security:
+                - Cognito: [ ]
+              x-amazon-apigateway-integration:
+                httpMethod: "GET"
+                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries"
+                responses:
+                  default:
+                    statusCode: "200"
+                passthroughBehavior: "when_no_match"
+                type: "http_proxy"
+        components:
+          schemas:
+            Countries:
+              type: "array"
+              description: "list of happiness country data"
+              items:
+                $ref: "#/components/schemas/Country"
+            Country:
+              type: "object"
+              properties:
+                score:
+                  type: "number"
+                name:
+                  type: "string"
+          securitySchemes:
+            Cognito:
+              type: "apiKey"
+              name: "authorization"
+              in: "header"
+              x-amazon-apigateway-authtype: "cognito_user_pools"
+              x-amazon-apigateway-authorizer:
+                providerARNs:
+                  - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
+                type: "cognito_user_pools"
+  Dashboard:
     Type: AWS::CloudWatch::Dashboard
     Properties:
       DashboardName: "worldhappiness"

@@ -14,5 +14,6 @@ Gathered in a single cloudformation [template](.resources/cf.yaml) that includes
 **Targets**
 
 * infra-deploy: deploy application resources cloudformation template.
+* export-api-spec: generates openapi spec from api gateway deployed api
 
 

@@ -46,3 +46,8 @@ infra-deploy:
 		--stack-name world-happiness --capabilities CAPABILITY_NAMED_IAM \
 		--tags Name="world-happiness-api" Application="world-happiness-api" \
 		--template-file ./.resources/cf.yaml --no-fail-on-empty-changeset
+
+export-api-spec:
+	aws apigateway get-export --parameters extensions='apigateway' \
+	--rest-api-id l84n6w2qs6 --stage-name prod --export-type oas30 \
+	--accepts application/yaml api-spec-latest.yaml
