@@ -1,37 +1,56 @@
-## Welcome to GitHub Pages
+# BeyondGdp: alternative measures to GDP for measuring our lives
 
-You can use the [editor on GitHub](https://github.com/enekofb/beyond-gdp/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+## Why we are needed
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+**Limitations of GDP**
 
-### Markdown
+There are several limitations of GDP as a welfare indicator. 
+Most of them can be traced back to the fact that in essence GDP is not supposed to measure well-being. As a result the concept does not account for various important factors that influence social welfare. 
+To keep things simple the most relevant limitations are listed below:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- GDP does not incorporate any measures of welfare
+- GDP only includes market transactions
+- GDP does not describe income distribution
+- GDP does not describe what is being produced
+- GDP ignores externalities
 
-```markdown
-Syntax highlighted code block
+- [![Limitations to GDP](https://img.youtube.com/vi/G4d_-zaJXuA/0.jpg)](https://www.youtube.com/watch?v=G4d_-zaJXuA)
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+**Alternatives to GDP**
 
-1. Numbered
-2. List
+At the back of 2008 global financial markets, different initiatives where developed to 
+overtake the limitation of measuring progress in our societies via rely in just GDP growth. 
 
-**Bold** and _Italic_ and `Code` text
+A non-exhaustive list of efforts includes 
 
-[Link](url) and ![Image](src)
-```
+* Index of Human Development (HDI)
+* Human Poverty Index (HPI)
+* Gross Domestic Happiness (GDH)
+* Index of Sustainable Economic Welfare (ISEW)
+* Genuine Progress Indicator (GPI)
+* Happy Planet Index – measure of environmental efficiency for supporting well-being
+* Green gross domestic product (green GDP or GGDP)
+* Median income – (average wages)
+* Well-Being index
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+- [![Limitations to GDP](https://img.youtube.com/vi/G4d_-zaJXuA/0.jpg)](https://www.youtube.com/watch?v=G4d_-zaJXuA)
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/enekofb/beyond-gdp/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Our vision
+
+- We believe that a life worth living would be explained by narratives, better explained by beyondgdp indicators 
+than GDP. 
+- We aim to provide a better way to explain the world the events that rule our lives.
+
+## Our services
+
+### World Happiness Report API
+
+[![World Happiness](imgs/worldhappiness.png)](https://app.swaggerhub.com/apis/beyond-gdp/wold-happiness_api/v1)
+
+Our portfolio is ever-growing. Here our initial set of services.
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Say hello at [eneko@beyondgdp.co.uk](mailto:eneko@beyondgdp.co.uk)
