@@ -1,5 +1,5 @@
 # Beyond GDP
-A repo for services to build the data gap around beyond gdp approaches
+Alternative measures to GDP for measuring our lives
 
 ## world happiness api
 It provides a rest api to consume [world happiness](https://worldhappiness.report/) data

@@ -1,5 +1,3 @@
-# BeyondGdp: alternative measures to GDP for measuring our lives
-
 ## Why we are needed
 
 **Limitations of GDP**
@@ -14,7 +12,7 @@ To keep things simple the most relevant limitations are listed below:
 - GDP does not describe what is being produced
 - GDP ignores externalities
 
-- [![Limitations to GDP](https://img.youtube.com/vi/G4d_-zaJXuA/0.jpg)](https://www.youtube.com/watch?v=G4d_-zaJXuA)
+[![Limitations to GDP](https://img.youtube.com/vi/G4d_-zaJXuA/0.jpg)](https://www.youtube.com/watch?v=G4d_-zaJXuA)
 
 
 **Alternatives to GDP**
@@ -33,8 +31,6 @@ A non-exhaustive list of efforts includes
 * Green gross domestic product (green GDP or GGDP)
 * Median income – (average wages)
 * Well-Being index
-
-- [![Limitations to GDP](https://img.youtube.com/vi/G4d_-zaJXuA/0.jpg)](https://www.youtube.com/watch?v=G4d_-zaJXuA)
 
 
 ## Our vision
