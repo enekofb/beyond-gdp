@@ -47,7 +47,7 @@ than GDP.
 
 [![World Happiness](imgs/worldhappiness.png)](https://app.swaggerhub.com/apis/beyond-gdp/wold-happiness_api/v1)
 
-Our portfolio is ever-growing. Here our initial set of services.
+Our portfolio is ever-growing!
 
 ### Support or Contact
 
