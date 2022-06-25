@@ -7,14 +7,13 @@ metadata:
     app: {{ .Release.Name }}
     version: {{ .Values.metadata.version }}
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:eu-west-1:436139220509:certificate/55711799-cded-4528-aba7-a363d44579bb
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
 spec:
   type: LoadBalancer
   ports:
-    - name: https
-      port: 443
+    - name: http
+      port: 80
       targetPort: 8080
   selector:
     app: {{ .Release.Name }}

@@ -1,3 +1,7 @@
+---
+layout: post
+title: beyondgdp.co.uk
+---
 # beyondgdp.co.uk
 
 ## Why we are needed

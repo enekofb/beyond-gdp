@@ -52,6 +52,13 @@ Resources:
     Properties:
       Domain: !Ref CognitoDomain
       UserPoolId: !Ref UserPool
+  ApiGatewayVpcLink:
+    Type: AWS::ApiGateway::VpcLink
+    Properties:
+      Description: "worldhappiness vpc link"
+      Name: "worldhappinessVpcLink"
+      TargetArns:
+        - arn:aws:elasticloadbalancing:eu-west-1:436139220509:loadbalancer/net/a105223b23e154a86b9d7f8fc10a493b/de4ae8c2399c8471
   ApiGatewayAuthorizer:
     Type: AWS::ApiGateway::Authorizer
     DependsOn:
@@ -110,15 +117,17 @@ Resources:
               security:
                 - Cognito: [ ]
               x-amazon-apigateway-integration:
+                type: "http_proxy"
+                connectionId: "${stageVariables.vpcLinkId}"
                 httpMethod: "GET"
-                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries/{countryName}"
+                uri: "http://a105223b23e154a86b9d7f8fc10a493b-de4ae8c2399c8471.elb.eu-west-1.amazonaws.com/countries/{countryName}"
                 responses:
                   default:
                     statusCode: "200"
+                connectionType: "VPC_LINK"
                 requestParameters:
                   integration.request.path.countryName: "method.request.path.countryName"
                 passthroughBehavior: "when_no_match"
-                type: "http_proxy"
           /countries:
             get:
               responses:
@@ -137,13 +146,15 @@ Resources:
               security:
                 - Cognito: [ ]
               x-amazon-apigateway-integration:
+                type: "http_proxy"
+                connectionId: "${stageVariables.vpcLinkId}"
                 httpMethod: "GET"
-                uri: "https://af31af20b0e3642c889cc73bb0814b81-1243656179.eu-west-1.elb.amazonaws.com/countries"
+                uri: "http://a105223b23e154a86b9d7f8fc10a493b-de4ae8c2399c8471.elb.eu-west-1.amazonaws.com/countries"
                 responses:
                   default:
                     statusCode: "200"
                 passthroughBehavior: "when_no_match"
-                type: "http_proxy"
+                connectionType: "VPC_LINK"
         components:
           schemas:
             Countries:
@@ -165,9 +176,10 @@ Resources:
               in: "header"
               x-amazon-apigateway-authtype: "cognito_user_pools"
               x-amazon-apigateway-authorizer:
+                type: "cognito_user_pools"
                 providerARNs:
                   - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
-                type: "cognito_user_pools"
+
   Dashboard:
     Type: AWS::CloudWatch::Dashboard
     Properties:

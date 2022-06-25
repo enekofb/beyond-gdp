@@ -36,7 +36,7 @@ install: test
 load-image:
 	kind load docker-image world-happiness-api:latest --name development
 
-helm-upgrade: load-image
+helm-upgrade:
 	helm upgrade world-happiness-api .charts/world-happiness-api -n world-happiness --wait --timeout 120s --create-namespace --install
 
 upgrade: docker-build helm-upgrade
@@ -46,6 +46,12 @@ infra-deploy:
 		--stack-name world-happiness --capabilities CAPABILITY_NAMED_IAM \
 		--tags Name="world-happiness-api" Application="world-happiness-api" \
 		--template-file ./.resources/cf.yaml --no-fail-on-empty-changeset
+
+infra-dev-deploy:
+	aws cloudformation deploy --region $(AWS_REGION) --profile $(AWS_PROFILE)  \
+		--stack-name world-happiness-dev --capabilities CAPABILITY_NAMED_IAM \
+		--tags Name="world-happiness-api-dev" Application="world-happiness-api" \
+		--template-file ./.resources/dev-cf.yaml --no-fail-on-empty-changeset
 
 export-api-spec:
 	aws apigateway get-export --parameters extensions='apigateway' \
