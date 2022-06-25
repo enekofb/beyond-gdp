@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: world happiness as servereless
+Parameters:
+  apiGatewayStageName:
+    Type: String
+    AllowedPattern: "[a-z0-9]+"
+    Default: call
+Resources:
+  VpcEndpoint:
+    Type: AWS::EC2::VPCEndpointService
+    Properties:
+      AcceptanceRequired: false
+      NetworkLoadBalancerArns:
+        - arn:aws:elasticloadbalancing:eu-west-1:436139220509:loadbalancer/net/a105223b23e154a86b9d7f8fc10a493b/de4ae8c2399c8471
+
