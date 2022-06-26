@@ -13,10 +13,10 @@ Parameters:
     Description: Enter a string. Must be alpha numeric 3-63 in length.
     Default: "world-happiness"
 Resources:
-  MyRepository:
+  EcrRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: "world-happiness-api"
+      RepositoryName: "world-happiness"
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -71,7 +71,7 @@ Resources:
       IdentitySource: method.request.header.authorization
       Name: Cognito
       ProviderARNs:
-        - "arn:aws:cognito-idp:eu-west-1:436139220509:userpool/eu-west-1_pt0xIJIEc"
+        - !Ref UserPool
       RestApiId: !Ref ApiGateway
       Type: COGNITO_USER_POOLS
   ApiGatewayDeployment:
@@ -94,10 +94,7 @@ Resources:
           description: "world happiness api gateway"
           version: "v1"
         servers:
-          - url: "https://l84n6w2qs6.execute-api.eu-west-1.amazonaws.com/{basePath}"
-            variables:
-              basePath:
-                default: "/prod"
+          - url: "https://api.worldhappiness.beyondgdp.co.uk/v1"
         paths:
           /countries/{countryName}:
             get:
