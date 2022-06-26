@@ -1,7 +1,3 @@
----
-layout: post
-title: beyondgdp.co.uk
----
 # beyondgdp.co.uk
 
 ## Why we are needed
@@ -49,7 +45,7 @@ than GDP.
 
 ### World Happiness Report API
 
-[![World Happiness](imgs/worldhappiness.png)](https://app.swaggerhub.com/apis/beyond-gdp/wold-happiness_api/v1)
+[![World Happiness](imgs/worldhappiness.png)](./worldhappiness.md)
 
 Our portfolio is ever-growing!
 
