@@ -1,6 +1,8 @@
 replicas: 1
 metadata:
   version: "latest"
+service:
+  type: "ClusterIP"
 container:
   image: "enekofb/world-happiness-api"
 resources:
