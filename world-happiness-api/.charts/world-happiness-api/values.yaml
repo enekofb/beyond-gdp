@@ -1,6 +1,8 @@
 replicas: 1
 metadata:
   version: "latest"
+container:
+  image: "enekofb/world-happiness-api"
 resources:
   requests:
     memory: 0.25Gi

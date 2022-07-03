@@ -24,7 +24,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: "436139220509.dkr.ecr.eu-west-1.amazonaws.com/world-happiness-api:{{ .Values.metadata.version }}"
+        - image: "{{ .Values.container.image}}:{{ .Values.metadata.version }}"
           name: app
           imagePullPolicy: IfNotPresent
           resources:
